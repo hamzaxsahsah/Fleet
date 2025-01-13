@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+
+model Organisation {
+  id Int @id @default(autoincrement())
+  name String
+  users User[]
+  fleet Fleet[]
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  name String
+  email String
+  password String
+  organisation Organisation @relation(fields: [organisationId], references: [id])
+  organisationId Int
+  role role @relation(fields: [roleId], references: [id])
+  roleId Int
+}
+
+model Fleet {
+  id Int @id @default(autoincrement())
+  name String
+  organisation Organisation @relation(fields: [organisationId], references: [id])
+  organisationId Int
+  vehicules Vehicule[]
+}
+
+model Vehicule {
+  id Int @id @default(autoincrement())
+  name String
+  fleet Fleet @relation(fields: [fleetId], references: [id])
+  fleetId Int
+  device Device? @relation // Optional relation to avoid circular dependency
+  Position Position[]
+}
+
+model Device {
+  id Int @id @default(autoincrement())
+  vehicule Vehicule @relation(fields: [vehiculeId], references: [id])
+  vehiculeId Int @unique // Ensure one-to-one relationship with a unique constraint
+}
+
+model Position {
+  id Int @id @default(autoincrement())
+  latitude Float
+  longitude Float
+  vehicule Vehicule @relation(fields: [vehiculeId], references: [id])
+  vehiculeId Int
+  timestamp DateTime
+}
+
+model role {
+  id Int @id @default(autoincrement())
+  name String
+  users User[]
+}
