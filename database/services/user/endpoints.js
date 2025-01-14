@@ -1,5 +1,5 @@
 const express = require('express');
-const { createUser, deleteUser, getAllUsers, getUserById, updateUser } = require('./functions');
+const { createUser, deleteUser, getAllUsers, getUserById, updateUser , assignRole,removeRole} = require('./functions');
 
 const router = express.Router();
 
@@ -50,6 +50,28 @@ router.get('/users', async (req, res) => {
     try {
         const users = await getAllUsers();
         res.status(200).json(users);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+// assign role to user
+router.post('/user/:userId/role/:roleId', async (req, res) => {
+    try {
+        const { userId, roleId } = req.params;
+        const user = await assignRole(parseInt(userId, 10), parseInt(roleId, 10));
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+//revoke role from user
+router.delete('/user/:userId/role/:roleId', async (req, res) => {
+    try {
+        const { userId, roleId } = req.params;
+        const user = await removeRole(parseInt(userId, 10), parseInt(roleId, 10));
+        res.status(200).json(user);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

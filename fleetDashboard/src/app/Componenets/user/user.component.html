@@ -1,0 +1,9 @@
+<button mat-raised-button color="primary" (click)="onCreateUser()">Add User</button>
+
+<div *ngIf="isCreating">
+  <app-user-form></app-user-form>
+</div>
+
+<div >
+  <app-user-list *ngIf="!isCreating"></app-user-list>
+</div>

@@ -1,0 +1,21 @@
+<div class="filter-buttons">
+    <div class="list-view-button" 
+         (click)="setListView()"
+         [class.active]="currentView === 'list'">
+      <span class="material-icons">view_list</span> List view
+    </div>
+    <div class="grid-view-button"
+         (click)="setGridView()"
+         [class.active]="currentView === 'grid'">
+      <span class="material-icons">grid_view</span> Grid view
+    </div>
+  </div>
+  <ol class="list" [class.list-view-filter]="currentView === 'list'"
+                   [class.grid-view-filter]="currentView === 'grid'" 
+                  
+                    >
+    
+                    <li *ngFor="let user of users">{{ user.name }}</li>
+
+   
+  </ol>

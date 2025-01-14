@@ -31,4 +31,56 @@ const updateUser = async (id, data) => {
         data
     });
 };
-module.exports = { createUser, deleteUser , getAllUsers, getUserById, updateUser};
+
+const createRole = async (data) => {
+    return prisma.role.create({
+        data
+    });
+};
+const deleteRole = async (id) => {
+    return prisma.role.delete({
+        where: {
+            id
+        }
+    });
+};
+const getAllRoles = async () => {
+    return prisma.role.findMany();
+};
+const getRoleById = async (id) => {
+    return prisma.role.findUnique({
+        where: {
+            id
+        }
+    });
+};
+const assignRole = async (userId, roleId) => {
+    return prisma.user.update({
+        where: {
+            id: userId
+        },
+        data: {
+            role: {
+                connect: {
+                    id: roleId
+                }
+            }
+        }
+    });
+};
+const removeRole = async (userId, roleId) => {
+    return prisma.user.update({
+        where: {
+            id: userId
+        },
+        data: {
+            role: {
+                disconnect: {
+                    id: roleId
+                }
+            }
+        }
+    });
+};
+
+module.exports = { createUser, deleteUser , getAllUsers, getUserById, updateUser , createRole, deleteRole , getAllRoles, getRoleById,assignRole,removeRole};
